@@ -28,7 +28,7 @@ class CommentsTableSeeder extends Seeder
         DB::table('comments')->insert($param);
         $param = [
             'item_id' => 1,
-            'user_id' => 4,
+            'user_id' => 2,
             'content' => '金額交渉は可能でしょうか'
         ];
         DB::table('comments')->insert($param);
@@ -39,19 +39,19 @@ class CommentsTableSeeder extends Seeder
         ];
         DB::table('comments')->insert($param);
         $param = [
-            'item_id' => 3,
-            'user_id' => 5,
+            'item_id' => 6,
+            'user_id' => 3,
             'content' => '注文後何日で出荷いただけますか'
         ];
         DB::table('comments')->insert($param);
         $param = [
-            'item_id' => 3,
-            'user_id' => 6,
+            'item_id' => 6,
+            'user_id' => 1,
             'content' => '4束に見えるのですが出品は3束ですか'
         ];
         DB::table('comments')->insert($param);
         $param = [
-            'item_id' => 3,
+            'item_id' => 6,
             'user_id' => 2,
             'content' => '4束ですタイトルの間違えです'
         ];

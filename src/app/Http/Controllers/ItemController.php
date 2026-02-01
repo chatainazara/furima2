@@ -78,7 +78,7 @@ class ItemController extends Controller
     }
 
     public function itemDetailView(Request $request){
-        $itemId = $request -> item_id;
+        $itemId = $request -> itemId;
         $item = Item::with('categories')->find($itemId);
         $userId = Auth::id();
         $favorites = Favorite::where('item_id',$itemId)->get();
@@ -96,7 +96,6 @@ class ItemController extends Controller
         }else{
             $comment = 'un_comment';
         }
-
         return view('item_detail',[
             'item' => $item,
             'user_id' => $userId,
@@ -113,7 +112,7 @@ class ItemController extends Controller
 
     public function itemDetail(CommentRequest $request)
     {
-        $itemId = $request -> item_id;
+        $itemId = $request -> itemId;
         $item = Item::with('categories')->find($itemId);
         $userId = Auth::id();
         $favorites = Favorite::where('item_id',$itemId)->get();
@@ -124,7 +123,6 @@ class ItemController extends Controller
         }else{
             $favorite = 'un_favorite';
         }
-
         $comments = Comment::with(['user.profile'])->where('item_id',$itemId)->get();
         $commentsCount = count($comments);
         if ($comments -> contains('user_id',$userId)){
@@ -132,7 +130,6 @@ class ItemController extends Controller
         }else{
             $comment = 'un_comment';
         }
-
         switch ($request->input('action')) {
             // いいね
             case 'favorite':

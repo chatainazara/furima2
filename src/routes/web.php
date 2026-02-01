@@ -7,6 +7,7 @@ use App\Http\Controllers\PurchaseController;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
 use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\TransactionController;
 
 // ログインが必要なルート
 Route::middleware(['auth','verified'])->group(function () {
@@ -18,10 +19,12 @@ Route::middleware(['auth','verified'])->group(function () {
         Route::post('/sell', [ItemController::class, 'sellRegister']);
         Route::get('/mypage', [ProfileController::class, 'profile']);
         Route::post('/mypage', [ProfileController::class, 'buyOrSell']);
-        Route::get('/purchase/{item_id}',[PurchaseController::class,'purchaseView']);
-        Route::get('/purchase/address/{item_id}',[PurchaseController::class,'destinationInput']);
-        Route::post('/purchase/address/{item_id}',[PurchaseController::class,'destinationOrPaymentChange']);
-        Route::post('/item/{item_id}', [ItemController::class, 'itemDetail']);
+        Route::get('/mypage/transaction', [ProfileController::class, 'transaction']);//追加
+        Route::get('/purchase/{itemId}',[PurchaseController::class,'purchaseView']);
+        Route::get('/purchase/address/{itemId}',[PurchaseController::class,'destinationInput']);
+        Route::post('/purchase/address/{itemId}',[PurchaseController::class,'destinationOrPaymentChange']);
+        Route::post('/item/{itemId}', [ItemController::class, 'itemDetail']);
+        Route::get('/transaction/{itemId}', [TransactionController::class, 'transaction']);//追加
     });
     // stripe決済
     Route::get('/payment/{item}', [PaymentController::class, 'index']);
@@ -31,7 +34,7 @@ Route::middleware(['auth','verified'])->group(function () {
 // ログイン不要のルート
 Route::get('/', [ItemController::class, 'index']);
 Route::post('/',[ItemController::class,'searchAndMylist']);
-Route::get('/item/{item_id}', [ItemController::class, 'itemDetailView']);
+Route::get('/item/{itemId}', [ItemController::class, 'itemDetailView']);
 
 //phpinfoによる情報確認
 Route::get('/phpinfo', function(){return view('/phpinfo');});

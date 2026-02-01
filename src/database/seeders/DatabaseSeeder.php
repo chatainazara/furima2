@@ -4,8 +4,6 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use App\Models\Favorite;
-// use App\Models\Item;
-// use Database\Factories\ItemFactory;
 
 class DatabaseSeeder extends Seeder
 {
@@ -24,5 +22,7 @@ class DatabaseSeeder extends Seeder
         $this->call(CommentsTableSeeder::class);
         $this->call(BuysTableSeeder::class);
         $this->call(CategoryItemTableSeeder::class);
+        $this->call(ChatsTableSeeder::class);
+        $this->call(EvaluationsTableSeeder::class);
     }
 }

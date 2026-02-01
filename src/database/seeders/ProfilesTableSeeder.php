@@ -38,29 +38,5 @@ class ProfilesTableSeeder extends Seeder
             'building' => 'オウレン荘105',
         ];
         DB::table('profiles')->insert($param);
-        $param = [
-            'user_id' => 4,
-            'pict_url' => '',
-            'post_code' => '000-0000',
-            'address' => '北海道新篠津市0-0-0',
-            'building' => 'バンクスタワー407',
-        ];
-        DB::table('profiles')->insert($param);
-        $param = [
-            'user_id' => 5,
-            'pict_url' => 'img/sample/profile5.png',
-            'post_code' => '000-0000',
-            'address' => '北海道音威子府区0-0-0',
-            'building' => 'テーダスクエア231',
-        ];
-        DB::table('profiles')->insert($param);
-            $param = [
-            'user_id' => 6,
-            'pict_url' => '',
-            'post_code' => '000-0000',
-            'address' => '北海道国縫市0-0-0',
-            'building' => 'リキッダセンター206',
-        ];
-        DB::table('profiles')->insert($param);
     }
 }
