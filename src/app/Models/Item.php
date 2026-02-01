@@ -48,4 +48,9 @@ class Item extends Model
     {
         return $this->hasOne('App\Models\Buy');
     }
+
+    public function chats()
+    {
+        return $this->hasMany(Chat::class);
+    }
 }

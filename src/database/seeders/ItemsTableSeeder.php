@@ -35,7 +35,7 @@ class ItemsTableSeeder extends Seeder
         ];
         DB::table('items')->insert($param);
         $param = [
-            'user_id' => 2,
+            'user_id' => 1,
             'name' => '玉ねぎ3束',
             'pict_url' => 'img/sample/item3.jpeg',
             'brand_name' => 'なし',
@@ -45,7 +45,7 @@ class ItemsTableSeeder extends Seeder
         ];
         DB::table('items')->insert($param);
         $param = [
-            'user_id' => 3,
+            'user_id' => 1,
             'name' => '革靴',
             'pict_url' => 'img/sample/item4.jpeg',
             'brand_name' => '',
@@ -65,7 +65,7 @@ class ItemsTableSeeder extends Seeder
         ];
         DB::table('items')->insert($param);
         $param = [
-            'user_id' => 1,
+            'user_id' => 2,
             'name' => 'マイク',
             'pict_url' => 'img/sample/item6.jpeg',
             'brand_name' => 'なし',
@@ -75,7 +75,7 @@ class ItemsTableSeeder extends Seeder
         ];
         DB::table('items')->insert($param);
         $param = [
-            'user_id' => 3,
+            'user_id' => 2,
             'name' => 'ショルダーバッグ',
             'pict_url' => 'img/sample/item7.jpeg',
             'brand_name' => '',
@@ -85,7 +85,7 @@ class ItemsTableSeeder extends Seeder
         ];
         DB::table('items')->insert($param);
         $param = [
-            'user_id' => 3,
+            'user_id' => 2,
             'name' => 'タンブラー',
             'pict_url' => 'img/sample/item8.jpeg',
             'brand_name' => 'なし',
@@ -95,7 +95,7 @@ class ItemsTableSeeder extends Seeder
         ];
         DB::table('items')->insert($param);
         $param = [
-            'user_id' => 3,
+            'user_id' => 2,
             'name' => 'コーヒーミル',
             'pict_url' => 'img/sample/item9.jpeg',
             'brand_name' => 'Starbacks',
@@ -105,7 +105,7 @@ class ItemsTableSeeder extends Seeder
         ];
         DB::table('items')->insert($param);
         $param = [
-            'user_id' => 4,
+            'user_id' => 2,
             'name' => 'メイクセット',
             'pict_url' => 'img/sample/item10.jpeg',
             'brand_name' => '',

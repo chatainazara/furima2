@@ -21,14 +21,14 @@ class PurchaseController extends Controller
         return view('auth.purchase',compact('item','user','payment','search',));
     }
 
-    public function destinationInput(Request $request,$item_id){
+    public function destinationInput(Request $request,$itemId){
         $payment = $request -> query('payment');
         $search = '';
-        return view('auth.destination',compact('item_id','payment','search'));
+        return view('auth.destination',compact('itemId','payment','search'));
     }
 
-    public function destinationOrPaymentChange(AddressRequest $request,$item_id){
-        $item = Item::find($item_id);
+    public function destinationOrPaymentChange(AddressRequest $request,$itemId){
+        $item = Item::find($itemId);
         $user = User::with('profile')->find(Auth::id());
         $payment = $request->payment;
         $search = '';

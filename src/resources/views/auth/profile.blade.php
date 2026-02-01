@@ -14,7 +14,21 @@
                 <img class="profile__img--item" src="{{asset($profile->pict_url ?? '')}}" alt=""/>
             </div>
             <div class="profile__name">
-                <p class="profile__name--text">{{$user['name']}}</p>
+                <div class="profile__name--text">
+                    {{$user['name']}}
+                </div>
+                <div class="profile__name--star">
+                @php
+                    $filledStars = floor($avgRating);
+                @endphp
+                @for ($i = 1; $i <= 5; $i++)
+                    @if ($i <= $filledStars)
+                        <span class="star filled">★</span>
+                    @else
+                        <span class="star">★</span>
+                    @endif
+                @endfor
+                </div>
             </div>
             <form class="profile__edit" action="/mypage/profile" method="get">
                 @csrf
@@ -28,12 +42,17 @@
             <form class="list-top__form" action="/mypage?tab=sell" method="post">
                 @csrf
                 <input type="hidden" name="search" value="{{$search}}">
-                <button class="list-top__button-sell" type="submit">出品した商品</button>
+                <button class="list-top__button {{($tab??'')==='sell'?'is-active':''}}" type="submit">出品した商品</button>
             </form>
             <form class="list-top__form" action="/mypage?tab=buy" method="post">
                 @csrf
                 <input type="hidden" name="search" value="{{$search}}">
-                <button class="list-top__button-buy" type="submit">購入した商品</button>
+                <button class="list-top__button {{($tab??'')==='buy'?'is-active':''}}" type="submit">購入した商品</button>
+            </form>
+            <form class="list-top__form" action="/mypage/transaction" method="get">
+                @csrf
+                <input type="hidden" name="search" value="{{$search}}">
+                <button class="list-top__button  {{($tab??'')==='transaction'?'is-active':''}}" type="submit">取引中商品の商品</button>
             </form>
         </div>
     </div>
@@ -42,13 +61,17 @@
         @foreach($items as $item)
         <div class="list__content">
             <div class="list__content-img">
-                <form class="list__content--form" action="/item/{{$item['id']}}" method="get" >
+                @if(!empty($transaction))
+                <form class="list__content--form" action="/transaction/{{$item->id}}" method="get" >
+                @else
+                <form class="list__content--form" action="/item/{{$item->id}}" method="get" >
+                @endif
                     @csrf
                     <button class="list__content--button" name="action" value="detail" type="submit">
-                        <img class="list__content--pict" src="{{$item['pict_url']}}" alt="" />
+                        <img class="list__content--pict" src="{{asset($item->pict_url)}}" alt="" />
                     </button>
                 </form>
-                @if($buys->contains('item_id', $item['id']))
+                @if($buys->contains('item_id', $item->id))
                 <div class="list__content-img--attention" >
                     <p class="list__content-img--attention-text" >sold</p>
                 </div>

@@ -1,25 +1,25 @@
 .profile__group{
     display:block;
-    width:60%;
+    width:70vw;
     align-items: center;
-    margin:50px auto;
+    margin:4vw auto;
 }
 
 .profile__inner {
     display: flex;
     align-items: center;
-    margin-bottom: 50px;
+    margin-bottom: 4vw;
     text-align: center;
 }
 
 .profile__img--item {
     display: block;
     border-radius: 50%;
-    width: 150px;
-    height: 150px;
+    width: 10vw;
+    height: 10vw;
     object-fit: cover;
     border: 1px solid black;
-    margin-right: 50px;
+    margin-right: 4vw;
 }
 
 .profile__img{
@@ -27,15 +27,31 @@
 }
 
 .profile__name{
-    display:block;
+    display:flex;
+    flex-direction: column;
 }
 
 .profile__name--text{
+    display:block;
     font-family: "Inter", sans-serif;
-    font-size: 36px;
+    font-size: 2.5vw;
     font-weight: 400;
     font-style: normal;
-    margin-left:100px;
+    margin-left:4vw;
+}
+
+.profile__name--star {
+    display: block;
+    margin-left: 4vw;
+}
+
+.star {
+    color: #ccc;
+    font-size: 1.5vw;
+}
+
+.star.filled {
+    color: gold;
 }
 
 .profile__edit{
@@ -43,64 +59,58 @@
 }
 
 .profile__edit--button{
-    padding: 10px;
-    width: 100%;
-    height: 65px;
+    padding: 0.5vw;
+    width: 20vw;
+    height: 7vh;
     border: none;
+    border: solid 1px pink;
     border-radius: 10px;
     font-family: "Inter", sans-serif;
-    font-size: 26px;
+    font-size: 1.5vw;
     font-weight: 400;
     font-style: normal;
     background: #ffffff;
     color: #ff5565;
     cursor: pointer;
-    margin-left: 150px;
+    margin-left: 20vw;
 }
 
 .list-top{
     display: flex;
     border-bottom: 1px solid rgb(0, 0, 0);
-    height: 100px;
+    height: 5vw;
     margin: 0 auto;
     align-items: end;
 }
 
 .list-top__inner{
     display: flex;
-    width: 30%;
+    width:50%;
     height: 50%;
     align-items: center;
-    margin-left: 150px;
+    margin-left: 10vw;
 }
 
 .list-top__form {
-    margin-left: 100px;
+    margin-left: 2vw;
     display: inline-block;
 }
 
-.list-top__button-sell {
+.list-top__button{
     display: inline-block;
     border: none;
     border-radius: 3px;
     font-family: "Inter", sans-serif;
-    font-size: 24px;
-    font-weight: 400;
-    font-style: normal;
-    background: #ffffff;
-    color: #ff0000;
-}
-
-.list-top__button-buy{
-    display: inline-block;
-    border: none;
-    border-radius: 3px;
-    font-family: "Inter", sans-serif;
-    font-size: 24px;
+    font-size: 1.5vw;
     font-weight: 400;
     font-style: normal;
     background: #ffffff;
     color: #000000;
+    line-height: 100%;
+}
+
+.list-top__button.is-active {
+    color: red;
 }
 
 .list{
@@ -111,17 +121,19 @@
 }
 
 .list__content{
-    display: inline-block;
-    width: 20%;
-    height: 20%;
-    margin: 50px 30px;
+    display: block;
+    width: 15vw;
+    height: 16vw;
+    margin: 3vw 2vw;
     aspect-ratio: 1 / 1.1;
 }
 
-.list__content-img{
+.list__content-img {
     display: block;
+    position: relative;
     width: 100%;
     height: 100%;
+    overflow: hidden;
 }
 
 .list__content--button{
@@ -132,6 +144,7 @@
 }
 
 .list__content--pict{
+    display: block;
     object-fit:cover;
     width: 100%;
     height:100%;
@@ -151,11 +164,11 @@
     width: 100%;
     height: 100%;
     font-family: "Inter", sans-serif;
-    font-size: 18px;
+    font-size: 1.2vw;
     font-weight: 400;
     font-style: normal;
     line-height: 100%;
-    margin-top: 30px;
+    margin-top: 1.5vw;
     text-align: center;
 }
 
@@ -167,139 +180,7 @@
 
 .list__content-text{
     font-family: "Inter", sans-serif;
-    font-size: 25px;
+    font-size: 1.5vw;
     font-weight: 400;
     font-style: normal;
-}
-
-/* タブレット対応 */
-@media screen and (max-width: 1400px) {
-
-    .profile__group {
-            display: block;
-            width: 60%;
-            align-items: center;
-            margin: 20px auto;
-        }
-
-    .profile__name--text{
-        font-family: "Inter", sans-serif;
-        font-size: 18px;
-        font-weight: 400;
-        font-style: normal;
-        margin-left:50px;
-    }
-
-    .profile__edit--button{
-        padding: 10px;
-        width: 100%;
-        height: 65px;
-        border: none;
-        border-radius: 10px;
-        font-family: "Inter", sans-serif;
-        font-size: 12px;
-        font-weight: 400;
-        font-style: normal;
-        background: #ffffff;
-        color: #ff5565;
-        cursor: pointer;
-        margin-left: 30px;
-    }
-
-    .profile__img--item {
-            display: block;
-            border-radius: 50%;
-            width: 75px;
-            height: 75px;
-            object-fit: cover;
-            border: 1px solid black;
-            margin-right: 50px;
-        }
-
-
-    .list-top__button {
-        margin-left: 0px;
-        display: inline-block;
-        border: none;
-        background-color: #ffffff;
-        font-family: "Inter", sans-serif;
-        font-size: 12px;
-        font-weight: 400;
-        font-style: normal;
-        color: #FF0000;
-    }
-
-    .list-top__button-sell {
-        display: inline-block;
-        border: none;
-        border-radius: 3px;
-        font-family: "Inter", sans-serif;
-        font-size: 12px;
-        font-weight: 400;
-        font-style: normal;
-        background: #ffffff;
-        color: #ff0000;
-    }
-
-    .list-top__button-buy{
-        display: inline-block;
-        border: none;
-        border-radius: 3px;
-        font-family: "Inter", sans-serif;
-        font-size: 12px;
-        font-weight: 400;
-        font-style: normal;
-        background: #ffffff;
-        color: #000000;
-    }
-
-    .list-top__inner {
-        display: flex;
-        width: 100%;
-        height: 50%;
-        margin-left: 20px;
-    }
-
-    .list__content {
-        display: inline-block;
-        width: 150px;
-        height: 160px;
-        margin: 50px 30px;
-    }
-
-    .list__content--pict {
-        object-fit: cover;
-        width: 100%;
-        height: 100%;
-    }
-
-    .list__content-img--attention {
-        width: 100%;
-        height:10%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        background: rgb(255, 145, 145);
-    }
-
-    .list__content-img--attention-text {
-        display: block;
-        width: 100%;
-        height: 100%;
-        font-family: "Inter", sans-serif;
-        font-size: 9px;
-        font-weight: 400;
-        font-style: normal;
-        line-height: 100%;
-        margin-top: 10%;
-        text-align: center;
-    }
-
-    .list__content-text {
-        font-family: "Inter", sans-serif;
-        font-size: 12px;
-        font-weight: 400;
-        font-style: normal;
-    }
-
 }

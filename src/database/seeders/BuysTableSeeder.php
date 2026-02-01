@@ -24,8 +24,8 @@ class BuysTableSeeder extends Seeder
         ];
         DB::table('buys')->insert($param);
         $param = [
-            'item_id' => 3,
-            'user_id' => 6,
+            'item_id' => 4,
+            'user_id' => 2,
             'payment' => 'konbini',
             'destination_post_code' => '222-2222',
             'destination_address' => '北海道浜頓別村0-0-0',
