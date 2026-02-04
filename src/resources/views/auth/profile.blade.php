@@ -52,20 +52,22 @@
             <form class="list-top__form" action="/mypage/transaction" method="get">
                 @csrf
                 <input type="hidden" name="search" value="{{$search}}">
-                <button class="list-top__button  {{($tab??'')==='transaction'?'is-active':''}}" type="submit">取引中商品の商品</button>
+                @php $totalUnread = $totalUnread ?? 0; @endphp
+                <button class="list-top__button  {{($tab??'')==='transaction'?'is-active':''}}" type="submit">取引中の商品</button>
+                @if($totalUnread > 0)
+                <span class="badge">{{ $totalUnread }}</span>
+                @endif
             </form>
         </div>
     </div>
 
     <div class="list">
         @foreach($items as $item)
+        @if(empty($transaction))
+        <!-- 出品した商品と購入した商品のタブの場合 -->
         <div class="list__content">
             <div class="list__content-img">
-                @if(!empty($transaction))
-                <form class="list__content--form" action="/transaction/{{$item->id}}" method="get" >
-                @else
                 <form class="list__content--form" action="/item/{{$item->id}}" method="get" >
-                @endif
                     @csrf
                     <button class="list__content--button" name="action" value="detail" type="submit">
                         <img class="list__content--pict" src="{{asset($item->pict_url)}}" alt="" />
@@ -81,6 +83,46 @@
                 <p class="list__content-text">{{$item['name']}}</p>
             </div>
         </div>
+        @else
+        <!-- 取引中の商品のタブの場合 -->
+        <div class="list__content">
+            <div class="list__content-img">
+                @php
+                    $buy = $buys->firstWhere('item_id', $item->id);     // この商品に紐づく取引(Buy)を1件取る
+                    $eval  = $buy?->evaluation ?? null;                   // 評価があれば取る
+                    $isDone = $eval && !is_null($eval->evaluate) && !is_null($eval->evaluated); // 両方埋まってたら完了
+                @endphp
+                @if($isDone)
+                <!-- 取引が終了した商品 -->
+                <form class="list__content--form" action="/transaction/{{$item->id}}" method="get" >
+                    <button class="list__content--button" name="action" value="detail" type="button">
+                        <img class="list__content--pict" src="{{asset($item->pict_url)}}" alt="" />
+                    </button>
+                </form>
+                <div class="list__content-img--attention" >
+                    <p class="list__content-img--attention-text" >取引終了</p>
+                </div>
+                @else
+                <!-- まだ取引中の商品 -->
+                <form class="list__content--form" action="/transaction/{{$item->id}}" method="get" >
+                    @csrf
+                    @php
+                        $unread = $unreadCountByItem[$item->id] ?? 0;
+                    @endphp
+                    @if($unread > 0)
+                        <div class="unread-badge">{{ $unread }}</div>
+                    @endif
+                    <button class="list__content--button" name="action" value="detail" type="submit">
+                        <img class="list__content--pict" src="{{asset($item->pict_url)}}" alt="" />
+                    </button>
+                </form>
+                @endif
+            </div>
+            <div class="list__content-explain">
+                <p class="list__content-text">{{$item['name']}}</p>
+            </div>
+        </div>
+        @endif
         @endforeach
     </div>
 </div>

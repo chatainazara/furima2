@@ -4,26 +4,21 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\Item;
-use App\Models\User;
+use App\Models\Buy;
 
 class Chat extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'item_id',
-        'chat',
-        'pict',
-        'user_id',
+    'buy_id',
+    'chat',
+    'pict',
+    'position',
     ];
 
-    public function item(){
-        return $this->belongsTo(Item::class);
-    }
-
-    public function user(){
-        return $this->belongsTo(User::class);
+    public function buy(){
+        return $this->belongsTo(Buy::class);
     }
 
 }

@@ -8,6 +8,7 @@ use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\TransactionController;
+use App\Http\Controllers\EvaluationController;
 
 // ログインが必要なルート
 Route::middleware(['auth','verified'])->group(function () {
@@ -25,6 +26,11 @@ Route::middleware(['auth','verified'])->group(function () {
         Route::post('/purchase/address/{itemId}',[PurchaseController::class,'destinationOrPaymentChange']);
         Route::post('/item/{itemId}', [ItemController::class, 'itemDetail']);
         Route::get('/transaction/{itemId}', [TransactionController::class, 'transaction']);//追加
+        Route::post('/transaction/store', [TransactionController::class, 'store']);//追加
+        Route::post('/transaction/update/{chat}', [TransactionController::class, 'update']);//追加
+        Route::delete('/transaction/delete/{chat}', [TransactionController::class, 'delete']);//追加
+        Route::post('/evaluation/store/{buyId}', [EvaluationController::class, 'store']);
+        Route::post('/evaluation/update/{buyId}', [EvaluationController::class, 'update']);
     });
     // stripe決済
     Route::get('/payment/{item}', [PaymentController::class, 'index']);

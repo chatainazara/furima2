@@ -15,45 +15,80 @@ class ChatsTableSeeder extends Seeder
     public function run()
     {
         $param = [
-            'item_id' => 1,
-            'chat' => '購入を検討しています、値下げ交渉は可能ですか',
-            'pict' => 'img/sample/chat1.jpeg',
-            'user_id' => 2,
+            'buy_id' => 1,
+            'chat' => '購入しました、郵送をお願いします',
+            'pict' => '',
+            'position' => 'buyer'
         ];
         DB::table('chats')->insert($param);
         $param = [
-            'item_id' => 1,
-            'chat' => '即日現金払いであれば、1万3000円まで値引きします',
+            'buy_id' => 1,
+            'chat' => '繁忙期につき、郵送が明日になりますが大丈夫でしょうか',
             'pict' => '',
-            'user_id' => 1,
+            'position' => 'seller'
         ];
         DB::table('chats')->insert($param);
         $param = [
-            'item_id' => 1,
-            'chat' => '条件について承知しました。これにて購入させていただきます。',
+            'buy_id' => 1,
+            'chat' => '承知しました、お待ちしております',
             'pict' => '',
-            'user_id' => 2,
+            'position' => 'buyer'
         ];
         DB::table('chats')->insert($param);
         $param = [
-            'item_id' => 2,
-            'chat' => 'これはどのような商品ですか',
+            'buy_id' => 1,
+            'chat' => '本日郵送しました',
             'pict' => '',
-            'user_id' => 3,
+            'position' => 'seller'
         ];
         DB::table('chats')->insert($param);
         $param = [
-            'item_id' => 3,
-            'chat' => 'これはどのような商品ですか',
+            'buy_id' => 1,
+            'chat' => '到着しました、綺麗に郵送いただきありがとうございました',
             'pict' => '',
-            'user_id' => 3,
+            'position' => 'buyer'
         ];
         DB::table('chats')->insert($param);
         $param = [
-            'item_id' => 3,
-            'chat' => '完璧な商品です',
+            'buy_id' => 2,
+            'chat' => '郵送をお願いします',
             'pict' => '',
-            'user_id' => 1,
+            'position' => 'buyer'
+        ];
+        DB::table('chats')->insert($param);
+        $param = [
+            'buy_id' => 2,
+            'chat' => '本日発送いたします',
+            'pict' => '',
+            'position' => 'seller'
+        ];
+        DB::table('chats')->insert($param);
+        $param = [
+            'buy_id' => 2,
+            'chat' => '到着を楽しみにお待ちします',
+            'pict' => '',
+            'position' => 'buyer'
+        ];
+        DB::table('chats')->insert($param);
+        $param = [
+            'buy_id' => 3,
+            'chat' => 'お支払いいたしました、よろしくお願いします',
+            'pict' => '',
+            'position' => 'buyer'
+        ];
+        DB::table('chats')->insert($param);
+        $param = [
+            'buy_id' => 3,
+            'chat' => '本日午後郵送予定です、少々お待ち下さい',
+            'pict' => '',
+            'position' => 'seller'
+        ];
+        DB::table('chats')->insert($param);
+        $param = [
+            'buy_id' => 3,
+            'chat' => '早急にご対応いただきありがとうございます',
+            'pict' => '',
+            'position' => 'buyer'
         ];
         DB::table('chats')->insert($param);
     }

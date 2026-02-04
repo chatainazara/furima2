@@ -11,6 +11,7 @@ use App\Models\Buy;
 use App\Models\Item;
 use App\Models\Chat;
 use App\Models\Evaluation;
+use Illuminate\Support\Facades\DB;
 
 class ProfileController extends Controller
 {
@@ -45,15 +46,10 @@ class ProfileController extends Controller
         $profile = Profile::where('user_id',Auth::id())->first();
         $items = Item::where('user_id',Auth::id())->get();
         $buys = Buy::all();
-        $evaluate = Evaluation::whereHas('item',function($query){$query->where('user_id',Auth::id());})->get();
-        $evaluated = Evaluation::where('user_id',Auth::id());
-        $evaluateAvg   = $evaluate->avg('evaluate');
-        $evaluateCount = $evaluate->count();
-        $evaluatedAvg   = $evaluated->avg('evaluated');
-        $evaluatedCount = $evaluated->count();
-        $totalCount = $evaluateCount + $evaluatedCount;
-        $avgRating = $totalCount > 0 ? (($evaluateAvg * $evaluateCount) +  ($evaluatedAvg * $evaluatedCount)) / $totalCount : null;
-        return view('auth.profile',['profile' => $profile,'user'=>$user,'items' => $items,'search'=>$request->search,'buys' => $buys,'avgRating'=>$avgRating]);
+        $userId = $user->id;
+        $avgRating = $this->buildAvgRating($userId);
+        [$unreadCountByBuy, $unreadCountByItem, $totalUnread] = $this->buildUnreadBadges($userId);
+        return view('auth.profile',['profile' => $profile,'user'=>$user,'items' => $items,'search'=>$request->search,'buys' => $buys,'avgRating'=>$avgRating,  'unreadCountByBuy' => $unreadCountByBuy,'unreadCountByItem' => $unreadCountByItem,'totalUnread' => $totalUnread,]);
     }
 
     public function buyOrSell(Request $request){
@@ -64,55 +60,114 @@ class ProfileController extends Controller
             $profile = Profile::where('user_id',Auth::id())->first();
             $buyId = Buy::where('user_id',Auth::id())->pluck('item_id')->toArray();
             $items = Item::whereIn('id',$buyId)->get();
-            $evaluate = Evaluation::whereHas('item',function($query){$query->where('user_id',Auth::id());})->get();
-            $evaluated = Evaluation::where('user_id',Auth::id());
-            $evaluateAvg   = $evaluate->avg('evaluate');
-            $evaluateCount = $evaluate->count();
-            $evaluatedAvg   = $evaluated->avg('evaluated');
-            $evaluatedCount = $evaluated->count();
-            $totalCount = $evaluateCount + $evaluatedCount;
-            $avgRating = $totalCount > 0 ? (($evaluateAvg * $evaluateCount) +  ($evaluatedAvg * $evaluatedCount)) / $totalCount : null;
-            return view('auth.profile',['profile' => $profile,'user'=>$user,'items' => $items,'search'=>$request->search,'buys' => $buys,'tab'=>'buy','avgRating'=>$avgRating]);
+            $userId = $user->id;
+            $avgRating = $this->buildAvgRating($userId);
+            [$unreadCountByBuy, $unreadCountByItem, $totalUnread] = $this->buildUnreadBadges($userId);
+            return view('auth.profile',['profile' => $profile,'user'=>$user,'items' => $items,'search'=>$request->search,'buys' => $buys,'tab'=>'buy','avgRating'=>$avgRating, 'unreadCountByBuy' => $unreadCountByBuy,'unreadCountByItem' => $unreadCountByItem,'totalUnread' => $totalUnread,]);
         }else{
             $user = User::find(Auth::id());
             $profile = Profile::where('user_id',Auth::id())->first();
             $items = Item::where('user_id',Auth::id())->get();
-            $evaluate = Evaluation::whereHas('item',function($query){$query->where('user_id',Auth::id());})->get();
-            $evaluated = Evaluation::where('user_id',Auth::id());
-            $evaluateAvg   = $evaluate->avg('evaluate');
-            $evaluateCount = $evaluate->count();
-            $evaluatedAvg   = $evaluated->avg('evaluated');
-            $evaluatedCount = $evaluated->count();
-            $totalCount = $evaluateCount + $evaluatedCount;
-            $avgRating = $totalCount > 0 ? (($evaluateAvg * $evaluateCount) +  ($evaluatedAvg * $evaluatedCount)) / $totalCount : null;
-            return view('auth.profile',['profile' => $profile,'user'=>$user,'items' => $items,'search'=>$request->search,'buys' => $buys,'tab'=>'sell','avgRating'=>$avgRating]);
+            $userId = $user->id;
+            $avgRating = $this->buildAvgRating($userId);
+            [$unreadCountByBuy, $unreadCountByItem, $totalUnread] = $this->buildUnreadBadges($userId);
+            return view('auth.profile',['profile' => $profile,'user'=>$user,'items' => $items,'search'=>$request->search,'buys' => $buys,'tab'=>'sell','avgRating'=>$avgRating, 'unreadCountByBuy' => $unreadCountByBuy,'unreadCountByItem' => $unreadCountByItem,'totalUnread' => $totalUnread,]);
         }
     }
 
     public function transaction(){
         $userId = Auth::id();
-        // 自分が参加したチャットの商品ID
-        $chatItemIds = Chat::where('user_id', $userId)
+        $user = User::find($userId);
+        $profile = Profile::where('user_id',$userId)->first();
+        $buys = Buy::all();
+        // 自分が購入した商品ID
+        $buyItemIds = Buy::where('user_id', $userId)
             ->pluck('item_id');
-        // 自分が出品者の商品でチャットが存在するitemのid
-        $transactionItemIds = Item::whereHas('chats')
+        // 自分が出品者の商品で、売れた商品のid
+        $sellItemIds = Item::whereHas('buys')
             ->where('user_id',$userId)
             ->pluck('id');
-        $items = Item::whereIn('id', $chatItemIds)
-            ->orWhereIn('id', $transactionItemIds)
+        // 売買履歴のある商品のコレクション（最新チャット順）
+        $items = Item::whereIn('items.id', $buyItemIds)
+            ->orWhereIn('items.id', $sellItemIds)
+            ->leftJoin('buys', 'buys.item_id', '=', 'items.id')
+            ->leftJoin('chats', 'chats.buy_id', '=', 'buys.id')
+            ->select('items.*', DB::raw('MAX(chats.created_at) as latest_chat_at'))
+            ->groupBy('items.id')
+            ->orderByDesc('latest_chat_at')
             ->get();
-        $profile = Profile::where('user_id',Auth::id())->first();
-        $user = User::find(Auth::id());
-        $buys = Buy::all();
-        $evaluate = Evaluation::whereHas('item',function($query){$query->where('user_id',Auth::id());})->get();
-        $evaluated = Evaluation::where('user_id',Auth::id());
-        $evaluateAvg   = $evaluate->avg('evaluate');
-        $evaluateCount = $evaluate->count();
-        $evaluatedAvg   = $evaluated->avg('evaluated');
-        $evaluatedCount = $evaluated->count();
-        $totalCount = $evaluateCount + $evaluatedCount;
-        $avgRating = $totalCount > 0 ? (($evaluateAvg * $evaluateCount) +  ($evaluatedAvg * $evaluatedCount)) / $totalCount : null;
-        return view('auth.profile',['profile' => $profile,'user'=>$user,'items' => $items,'buys' => $buys ,'transaction' => true,'tab'=>'transaction','avgRating'=>$avgRating]);
+
+        $avgRating = $this->buildAvgRating($userId);
+        [$unreadCountByBuy, $unreadCountByItem, $totalUnread] = $this->buildUnreadBadges($userId);
+        return view('auth.profile',['profile' => $profile,'user'=>$user,'items' => $items,'buys' => $buys ,'transaction' => true,'tab'=>'transaction','avgRating'=>$avgRating,'unreadCountByBuy' => $unreadCountByBuy,'unreadCountByItem' => $unreadCountByItem,'totalUnread' => $totalUnread,]);
     }
+
+    private function buildUnreadBadges(int $userId): array
+    {
+        // 未読バッジ（position方式）
+        $unreadCountByBuy = Chat::join('buys', 'buys.id', '=', 'chats.buy_id')
+            ->join('items', 'items.id', '=', 'buys.item_id')
+            ->where(function ($query) use ($userId) {
+                $query->where(function ($query2) use ($userId) {
+                        // 自分が買い手 → 相手（売り手）の発言だけ
+                        $query2->where('buys.user_id', $userId)
+                        ->where('chats.position', 'seller')
+                        ->where(function ($query3) {
+                            $query3->whereNull('buys.buyer_read')
+                                ->orWhereColumn('chats.id', '>', 'buys.buyer_read');
+                        });
+                    })
+                ->orWhere(function ($query2) use ($userId) {
+                        // 自分が売り手 → 相手（買い手）の発言だけ
+                        $query2->where('items.user_id', $userId)
+                        ->where('chats.position', 'buyer')
+                        ->where(function ($query3) {
+                            $query3->whereNull('buys.seller_read')
+                                ->orWhereColumn('chats.id', '>', 'buys.seller_read');
+                        });
+                    });
+            })
+            ->select('buys.id as buy_id', DB::raw('COUNT(*) as cnt'))
+            ->groupBy('buys.id')
+            ->pluck('cnt', 'buy_id'); // [buy_id => 未読数]
+        // itemごとに合算
+        $itemIdByBuyId = Buy::whereIn('id', $unreadCountByBuy->keys())
+            ->pluck('item_id', 'id');
+        $unreadCountByItem = [];
+        foreach ($unreadCountByBuy as $buyId => $cnt) {
+            $itemId = $itemIdByBuyId[$buyId] ?? null;
+            if (!$itemId) continue;
+            $unreadCountByItem[$itemId] = ($unreadCountByItem[$itemId] ?? 0) + $cnt;
+        }
+        $totalUnread = $unreadCountByBuy->sum();
+        return [$unreadCountByBuy, $unreadCountByItem, $totalUnread];
+    }
+
+    private function buildAvgRating(int $userId): ?float
+    {
+        $evaluations = Buy::with(['evaluation', 'item'])
+            ->where('user_id', $userId) // 買い手として関与
+            ->orWhereHas('item', fn($query) => $query->where('user_id', $userId)) // 売り手として関与
+            ->get()
+            ->pluck('evaluation')
+            ->filter(); // null除去
+        if ($evaluations->isEmpty()) return null;
+        $sum = 0;
+        $count = 0;
+        foreach ($evaluations as $eval) {
+            // 自分が売り手のとき受けた評価
+            if ($eval->buy->item->user_id == $userId && !is_null($eval->evaluate)) {
+                $sum += $eval->evaluate;
+                $count++;
+            }
+            // 自分が買い手のとき受けた評価
+            if ($eval->buy->user_id == $userId && !is_null($eval->evaluated)) {
+                $sum += $eval->evaluated;
+                $count++;
+            }
+        }
+        return $count === 0 ? null : $sum / $count;
+    }
+
 
 }

@@ -25,8 +25,8 @@
         card.mount('#card-element');
 
         const form = document.getElementById('payment-form');
-        form.addEventListener('submit', async (e) => {
-            e.preventDefault();
+        form.addEventListener('submit', async (element) => {
+            element.preventDefault();
             document.getElementById('submit').disabled = true;
 
             let paymentMethodId = null;

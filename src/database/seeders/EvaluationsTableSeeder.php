@@ -15,24 +15,33 @@ class EvaluationsTableSeeder extends Seeder
     public function run()
     {
         $param = [
-            'item_id' => 3,
+            'buy_id' => 1,
             'evaluate' => 4,
+            'evaluated' => null,
+        ];
+        DB::table('evaluations')->insert($param);
+        $param = [
+            'buy_id' => 2,
+            'evaluate' => 4,
+            'evaluated' => null,
+        ];
+        DB::table('evaluations')->insert($param);
+        $param = [
+            'buy_id' => 3,
+            'evaluate' => 4,
+            'evaluated' => null,
+        ];
+        DB::table('evaluations')->insert($param);
+        $param = [
+            'buy_id' => 4,
+            'evaluate' => 2,
             'evaluated' => 5,
-            'user_id' => 3,
         ];
         DB::table('evaluations')->insert($param);
         $param = [
-            'item_id' => 3,
-            'evaluate' => 4,
-            'evaluated' => 3,
-            'user_id' => 2,
-        ];
-        DB::table('evaluations')->insert($param);
-        $param = [
-            'item_id' => 6,
-            'evaluate' => 4,
-            'evaluated' => 3,
-            'user_id' => 1,
+            'buy_id' => 5,
+            'evaluate' => 5,
+            'evaluated' => 1,
         ];
         DB::table('evaluations')->insert($param);
     }

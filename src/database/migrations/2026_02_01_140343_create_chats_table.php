@@ -15,11 +15,12 @@ class CreateChatsTable extends Migration
     {
         Schema::create('chats', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('item_id')->constrained()->cascadeOnDelete();
-            $table->string('chat')->nullable();//チャット内容
+            $table->foreignId('buy_id')->constrained()->cascadeOnDelete();
+            $table->string('chat');//チャット内容
             $table->string('pict')->nullable();//写真URL
-            $table->foreignId('user_id')->constrained()->cascadeOnDelete();//購入者のid、購入前の段階でも良い
-        });
+            $table->string('position');
+            $table->timestamps();
+                });
     }
 
     /**

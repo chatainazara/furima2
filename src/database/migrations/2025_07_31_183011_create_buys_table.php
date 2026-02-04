@@ -21,6 +21,8 @@ class CreateBuysTable extends Migration
             $table->string('destination_post_code')->nullable();
             $table->string('destination_address')->nullable();
             $table->string('destination_building')->nullable();
+            $table->unsignedBigInteger('buyer_read')->nullable();
+            $table->unsignedBigInteger('seller_read')->nullable();
             $table->timestamps();
         });
     }

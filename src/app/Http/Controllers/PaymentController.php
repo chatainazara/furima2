@@ -53,13 +53,13 @@ class PaymentController extends Controller
             ]);
             // セッションをクリア
             session()->forget([
-                'item_id','payment',
+                'payment',
                 'destination_post_code','destination_address','destination_building'
             ]);
             return response()->json([
                 'success' => true,
                 'message' => $payment === 'card' ? 'カード決済完了！' : 'コンビニ支払い完了扱い！',
-                'redirect' => '/'
+                'redirect' => '/transaction/'.session('item_id')
             ]);
         } catch (\Exception $e) {
             return response()->json(['error' => $e->getMessage()], 500);

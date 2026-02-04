@@ -4,8 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\Item;
-use App\Models\User;
+use App\Models\Buy;
 
 class Evaluation extends Model
 {
@@ -13,18 +12,13 @@ class Evaluation extends Model
 
     protected $fillable = [
         'id',
-        'item_id',
+        'buy_id',
         'evaluate',
         'evaluated',
-        'user_id',
     ];
 
-    public function item(){
-        return $this->belongsTo('App\Models\Item');
-    }
-
-    public function user(){
-        return $this->belongsTo('App\Models\User');
+    public function buy(){
+        return $this->belongsTo('App\Models\Buy');
     }
 
 }
