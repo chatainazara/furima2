@@ -15,12 +15,6 @@ class EvaluationsTableSeeder extends Seeder
     public function run()
     {
         $param = [
-            'buy_id' => 1,
-            'evaluate' => 4,
-            'evaluated' => null,
-        ];
-        DB::table('evaluations')->insert($param);
-        $param = [
             'buy_id' => 2,
             'evaluate' => 4,
             'evaluated' => null,
@@ -35,7 +29,7 @@ class EvaluationsTableSeeder extends Seeder
         $param = [
             'buy_id' => 4,
             'evaluate' => 2,
-            'evaluated' => 5,
+            'evaluated' => null,
         ];
         DB::table('evaluations')->insert($param);
         $param = [

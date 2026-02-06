@@ -29,8 +29,8 @@ Route::middleware(['auth','verified'])->group(function () {
         Route::post('/transaction/store', [TransactionController::class, 'store']);//追加
         Route::post('/transaction/update/{chat}', [TransactionController::class, 'update']);//追加
         Route::delete('/transaction/delete/{chat}', [TransactionController::class, 'delete']);//追加
-        Route::post('/evaluation/store/{buyId}', [EvaluationController::class, 'store']);
-        Route::post('/evaluation/update/{buyId}', [EvaluationController::class, 'update']);
+        Route::post('/evaluation/store/{buyId}', [EvaluationController::class, 'store']);//追加
+        Route::post('/evaluation/update/{buyId}', [EvaluationController::class, 'update']);//追加
     });
     // stripe決済
     Route::get('/payment/{item}', [PaymentController::class, 'index']);

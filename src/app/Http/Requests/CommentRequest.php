@@ -23,17 +23,14 @@ class CommentRequest extends FormRequest
      */
     public function rules()
     {
-
         $rules = [
             'content' => '',
         ];
-
         if($this->input('action')==='comment'){
             $rules = [
                 'content' => 'required|max:255',
             ];
         }
-
         return $rules;
     }
 

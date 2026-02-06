@@ -2,16 +2,12 @@
 
 namespace Tests\Feature;
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 use App\Models\User;
 use App\Models\Item;
 use App\Models\Category;
 use App\Models\Favorite;
-use App\Models\Comment;
-use App\Models\Profile;
 use Symfony\Component\DomCrawler\Crawler;
 use Database\Seeders\CategoriesTableSeeder;
 

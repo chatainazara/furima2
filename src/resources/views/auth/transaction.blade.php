@@ -32,11 +32,11 @@
 
     @if($position == 'seller')
     <!-- 販売者としての視点 -->
-    <div class="tx-page">
+    <div class="content">
         <!-- 左サイド -->
-        <aside class="tx-side">
-            <div class="tx-side__title">その他の取引</div>
-            <div class="tx-side__list">
+        <aside class="content-left">
+            <div class="content-left__title">その他の取引</div>
+            <div class="content-left__list">
                 @foreach($buys as $buy)
                 @php
                     $eval  = $buy?->evaluation ?? null;                   // 評価があれば取る
@@ -44,47 +44,43 @@
                 @endphp
                 @if($isDone)
                 @else
-                    <form action="/transaction/{{$buy->item->id}}" method="get" class="tx-side__item">
-                        <button type="submit" class="tx-side__btn">{{$buy->item->name}}</button>
+                    <form action="/transaction/{{$buy->item->id}}" method="get" class="content-left__item">
+                        <button type="submit" class="content-left__btn">{{$buy->item->name}}</button>
                     </form>
                 @endif
                 @endforeach
             </div>
         </aside>
-
         <!-- 右メイン -->
-        <main class="tx-main">
-
+        <main class="content-right">
             <!-- 上ヘッダー -->
-            <section class="tx-head">
-                <div class="tx-head__left">
-                    <div class="tx-avatar">
+            <section class="content-head">
+                <div class="content-head__left">
+                    <div class="content-avatar">
                         <img src="{{ asset($transactionItem->user->profile->pict_url ?? 'img/noimage.png') }}" alt="">
                     </div>
-                    <h2 class="tx-head__title">「{{$transactionItem->user->name}}」さんとの取引画面</h2>
+                    <h2 class="content-head__title">「{{$transactionItem->user->name}}」さんとの取引画面</h2>
                 </div>
             </section>
-
             <!-- 商品カード -->
-            <section class="tx-item">
-                <div class="tx-item__img">
+            <section class="content-item">
+                <div class="content-item__img">
                     <img src="{{ asset($transactionItem->item->pict_url) }}" alt="">
                 </div>
-                <div class="tx-item__info">
-                    <div class="tx-item__name">{{$transactionItem->item->name}}</div>
-                    <div class="tx-item__price">¥ {{ number_format($transactionItem->item->price,0) }}</div>
+                <div class="content-item__info">
+                    <div class="content-item__name">{{$transactionItem->item->name}}</div>
+                    <div class="content-item__price">¥ {{ number_format($transactionItem->item->price,0) }}</div>
                 </div>
             </section>
-
             <!-- チャット欄 -->
-            <section class="tx-chat">
+            <section class="content-chat">
                 @foreach($chats as $chat)
                     @php
                         // 自分の発言かどうか（position が seller/buyer で入っている前提）
                         $isMine = ($chat->position === $position);
                     @endphp
-                    <div class="tx-msg {{ $isMine ? 'tx-msg--mine' : 'tx-msg--other' }}">
-                        <div class="tx-msg__avatar">
+                    <div class="content-msg {{ $isMine ? 'content-msg--mine' : 'content-msg--other' }}">
+                        <div class="content-msg__avatar">
                             <img
                                 src="{{ asset(
                                     $isMine
@@ -97,43 +93,38 @@
                                 alt=""
                             >
                         </div>
-
-                        <div class="tx-msg__body">
-                            <div class="tx-msg__name">
+                        <div class="content-msg__body">
+                            <div class="content-msg__name">
                                 {{ $isMine ? Auth::user()->name : ($position==='seller' ? $chat->buy->user->name : $chat->buy->item->user->name) }}
                             </div>
-
                             {{-- 編集中（自分の発言だけ） --}}
                             @if($isMine && $editId == $chat->id)
-                                <form class="tx-edit" action="/transaction/update/{{$chat->id}}" method="post">
+                                <form class="content-edit" action="/transaction/update/{{$chat->id}}" method="post">
                                     @csrf
-                                    <textarea name="chat" class="tx-edit__textarea">{{$chat->chat}}</textarea>
-                                    <button type="submit" class="tx-edit__save">保存</button>
+                                    <textarea name="chat" class="content-edit__textarea">{{$chat->chat}}</textarea>
+                                    <button type="submit" class="content-edit__save">保存</button>
                                 </form>
                             @else
-                                <div class="tx-msg__bubble">
+                                <div class="content-msg__bubble">
                                     {{$chat->chat}}
                                 </div>
                             @endif
-
                             @if($chat->pict)
-                                <div class="tx-msg__image">
+                                <div class="content-msg__image">
                                     <img src="{{ asset($chat->pict) }}" alt="">
                                 </div>
                             @endif
-
                             {{-- 自分の発言だけ操作を表示 --}}
                             @if($isMine)
-                                <div class="tx-msg__actions">
+                                <div class="content-msg__actions">
                                     <form action="/transaction/{{$chat->buy->item->id}}" method="get">
                                         <input type="hidden" name="editId" value="{{ $chat->id }}">
-                                        <button class="tx-action" type="submit">編集</button>
+                                        <button class="content-action" type="submit">編集</button>
                                     </form>
-
                                     <form action="/transaction/delete/{{$chat->id}}" method="post">
                                         @csrf
                                         @method('delete')
-                                        <button class="tx-action tx-action--danger" type="submit">削除</button>
+                                        <button class="content-action content-action--danger" type="submit">削除</button>
                                     </form>
                                 </div>
                             @endif
@@ -141,45 +132,42 @@
                     </div>
                 @endforeach
             </section>
-
             <!-- 入力バー -->
-            <section class="tx-input">
-                <div>
+            <section class="content-input">
                 @error('chat')
-                {{ $message }}
-                @enderror
+                <div class="error">
+                    {{ $message }}
                 </div>
-                <form class="tx-input__form" action="/transaction/store" method="post" enctype="multipart/form-data">
+                @enderror
+                <form class="content-input__form" action="/transaction/store" method="post" enctype="multipart/form-data">
                     @csrf
                     <textarea
                         name="chat"
                         id="chat"
-                        class="tx-input__textarea"
+                        class="content-input__textarea"
                         placeholder="取引メッセージを記入してください"
                     >{{ old('chat', session('chat_draft')) }}</textarea>
-
                     <input type="file" name="pict" id="pict" class="hidden" accept="image/png,image/jpeg">
                     <input type="hidden" name="buyId" value="{{$transactionItem->id}}">
                     <input type="hidden" name="position" value="{{$position}}">
-
-                    <label for="pict" class="tx-input__add">画像を追加</label>
-
-                    <button type="submit" class="tx-input__send" aria-label="送信">
+                    <label for="pict" class="content-input__add">画像を追加</label>
+                    <button type="submit" class="content-input__send" aria-label="送信">
                         <img src="{{asset('img/inputbuttun1.svg')}}" alt="">
                     </button>
                 </form>
             </section>
         </main>
     </div>
+    
     <!-- 販売者としての視点終わり -->
     @else
     <!-- 購入者としての視点 -->
-    <div class="tx-page">
+    <div class="content">
         <!-- 左サイド -->
-        <aside class="tx-side">
-            <div class="tx-side__title">その他の取引</div>
+        <aside class="content-left">
+            <div class="content-left__title">その他の取引</div>
 
-            <div class="tx-side__list">
+            <div class="content-left__list">
                 @foreach($buys as $buy)
                 @php
                     $eval  = $buy?->evaluation ?? null;                   // 評価があれば取る
@@ -187,49 +175,52 @@
                 @endphp
                 @if($isDone)
                 @else
-                    <form action="/transaction/{{$buy->item->id}}" method="get" class="tx-side__item">
-                        <button type="submit" class="tx-side__btn">{{$buy->item->name}}</button>
+                    <form action="/transaction/{{$buy->item->id}}" method="get" class="content-left__item">
+                        <button type="submit" class="content-left__btn">{{$buy->item->name}}</button>
                     </form>
                 @endif
                 @endforeach
             </div>
         </aside>
         <!-- 右メイン -->
-        <main class="tx-main">
+        <main class="content-right">
             <!-- 上ヘッダー -->
-            <section class="tx-head">
-                <div class="tx-head__left">
-                    <div class="tx-avatar">
+            <section class="content-head">
+                <div class="content-head__left">
+                    <div class="content-avatar">
                         <img src="{{ asset($transactionItem->item->user->profile->pict_url ?? 'img/noimage.png') }}" alt="">
                     </div>
-                    <h2 class="tx-head__title">「{{$transactionItem->item->user->name}}」さんとの取引画面</h2>
+                    <h2 class="content-head__title">「{{$transactionItem->item->user->name}}」さんとの取引画面</h2>
                 </div>
+                @if($needsEvaluation)
+                @else
                 <form action="">
-                    <button type="button" class="tx-complete" id="openCompleteModal">取引を完了する</button>
+                    <button type="button" class="content-complete" id="openCompleteModal">取引を完了する</button>
                 </form>
+                @endif
             </section>
 
             <!-- 商品カード -->
-            <section class="tx-item">
-                <div class="tx-item__img">
+            <section class="content-item">
+                <div class="content-item__img">
                     <img src="{{ asset($transactionItem->item->pict_url) }}" alt="">
                 </div>
-                <div class="tx-item__info">
-                    <div class="tx-item__name">{{$transactionItem->item->name}}</div>
-                    <div class="tx-item__price">¥ {{ number_format($transactionItem->item->price,0) }}</div>
+                <div class="content-item__info">
+                    <div class="content-item__name">{{$transactionItem->item->name}}</div>
+                    <div class="content-item__price">¥ {{ number_format($transactionItem->item->price,0) }}</div>
                 </div>
             </section>
 
             <!-- チャット欄 -->
-            <section class="tx-chat">
+            <section class="content-chat">
                 @foreach($chats as $chat)
                     @php
                         // 自分の発言かどうか
                         $isMine = ($chat->position === $position);
                     @endphp
 
-                    <div class="tx-msg {{ $isMine ? 'tx-msg--mine' : 'tx-msg--other' }}">
-                        <div class="tx-msg__avatar">
+                    <div class="content-msg {{ $isMine ? 'content-msg--mine' : 'content-msg--other' }}">
+                        <div class="content-msg__avatar">
                             <img src="{{ asset($isMine
                                     ? (Auth::user()->profile->pict_url ?? 'img/noimage.png')
                                     : ($position === 'seller'
@@ -240,42 +231,42 @@
                                 alt=""
                             >
                         </div>
-                        <div class="tx-msg__body">
-                            <div class="tx-msg__name">
+                        <div class="content-msg__body">
+                            <div class="content-msg__name">
                                 {{ $isMine ? Auth::user()->name : ($position==='seller' ? $chat->buy->user->name : $chat->buy->item->user->name) }}
                             </div>
 
                             {{-- 編集中（自分の発言だけ） --}}
                             @if($isMine && $editId == $chat->id)
-                                <form class="tx-edit" action="/transaction/update/{{$chat->id}}" method="post">
+                                <form class="content-edit" action="/transaction/update/{{$chat->id}}" method="post">
                                     @csrf
-                                    <textarea name="chat" class="tx-edit__textarea">{{$chat->chat}}</textarea>
-                                    <button type="submit" class="tx-edit__save">保存</button>
+                                    <textarea name="chat" class="content-edit__textarea">{{$chat->chat}}</textarea>
+                                    <button type="submit" class="content-edit__save">保存</button>
                                 </form>
                             @else
-                                <div class="tx-msg__bubble">
+                                <div class="content-msg__bubble">
                                     {{$chat->chat}}
                                 </div>
                             @endif
 
                             @if($chat->pict)
-                                <div class="tx-msg__image">
+                                <div class="content-msg__image">
                                     <img src="{{ asset($chat->pict) }}" alt="">
                                 </div>
                             @endif
 
                             {{-- 自分の発言だけ操作を表示 --}}
                             @if($isMine)
-                                <div class="tx-msg__actions">
+                                <div class="content-msg__actions">
                                     <form action="/transaction/{{$chat->buy->item->id}}" method="get">
                                         <input type="hidden" name="editId" value="{{ $chat->id }}">
-                                        <button class="tx-action" type="submit">編集</button>
+                                        <button class="content-action" type="submit">編集</button>
                                     </form>
 
                                     <form action="/transaction/delete/{{$chat->id}}" method="post">
                                         @csrf
                                         @method('delete')
-                                        <button class="tx-action tx-action--danger" type="submit">削除</button>
+                                        <button class="content-action content-action--danger" type="submit">削除</button>
                                     </form>
                                 </div>
                             @endif
@@ -285,18 +276,18 @@
             </section>
 
             <!-- 入力バー -->
-            <section class="tx-input">
-                <div>
+            <section class="content-input">
                 @error('chat')
-                {{ $message }}
-                @enderror
+                <div class="error">
+                    {{ $message }}
                 </div>
-                <form class="tx-input__form" action="/transaction/store" method="post" enctype="multipart/form-data">
+                @enderror
+                <form class="content-input__form" action="/transaction/store" method="post" enctype="multipart/form-data">
                     @csrf
                     <textarea
                         name="chat"
                         id="chat"
-                        class="tx-input__textarea"
+                        class="content-input__textarea"
                         placeholder="取引メッセージを記入してください"
                     >{{ old('chat', session('chat_draft')) }}</textarea>
 
@@ -304,9 +295,9 @@
                     <input type="hidden" name="buyId" value="{{$transactionItem->id}}">
                     <input type="hidden" name="position" value="{{$position}}">
 
-                    <label for="pict" class="tx-input__add">画像を追加</label>
+                    <label for="pict" class="content-input__add">画像を追加</label>
 
-                    <button type="submit" class="tx-input__send" aria-label="送信">
+                    <button type="submit" class="content-input__send" aria-label="送信">
                         <img src="{{asset('img/inputbuttun1.svg')}}" alt="">
                     </button>
                 </form>
@@ -316,38 +307,32 @@
     <!-- 購入者としての視点で終わり -->
     @endif
 
-    <!-- モーダルウィンドウ -->
+    <!-- モーダル -->
     <div class="rate-overlay" id="rateModal" aria-hidden="true">
         <div class="rate-modal" role="dialog" aria-modal="true" aria-labelledby="rateTitle">
             <div class="rate-modal__header">
-            <h3 id="rateTitle">取引が完了しました。</h3>
+            <h3 id="rateTitle" class="rate-modal__header--text">取引が完了しました。</h3>
             </div>
 
             <div class="rate-modal__body">
-            <p class="rate-modal__text">今回の取引相手はどうでしたか？</p>
-
-            @if($position === 'buyer')
-            <form action="/evaluation/store/{{$transactionItem->id}}" method="post" id="rateForm">
-            @elseif($position === 'seller')
-            <form action="/evaluation/update/{{$transactionItem->id}}" method="post" id="rateForm">
-            @endif
-                @csrf
-
-                {{-- 送信用の値 --}}
-                <input type="hidden" name="rating" id="ratingValue" value="0">
-
-                <div class="stars" id="stars">
-                    <button type="button" class="star" data-value="1" aria-label="1stars">★</button>
-                    <button type="button" class="star" data-value="2" aria-label="2stars">★</button>
-                    <button type="button" class="star" data-value="3" aria-label="3stars">★</button>
-                    <button type="button" class="star" data-value="4" aria-label="4stars">★</button>
-                    <button type="button" class="star" data-value="5" aria-label="5stars">★</button>
+                <div class="rate-modal__main">
+                    <p class="rate-modal__text">今回の取引相手はどうでしたか？</p>
+                    @if($position === 'buyer')
+                    <form action="/evaluation/store/{{$transactionItem->id}}" method="post" id="rateForm">
+                    @elseif($position === 'seller')
+                    <form action="/evaluation/update/{{$transactionItem->id}}" method="post" id="rateForm">
+                    @endif
+                        @csrf
+                    {{-- 送信用の値 --}}
+                    <input type="hidden" name="rating" id="ratingValue" value="0">
+                    <div class="stars" id="stars">
+                        <button type="button" class="star" data-value="1" aria-label="1stars">★</button>
+                        <button type="button" class="star" data-value="2" aria-label="2stars">★</button>
+                        <button type="button" class="star" data-value="3" aria-label="3stars">★</button>
+                        <button type="button" class="star" data-value="4" aria-label="4stars">★</button>
+                        <button type="button" class="star" data-value="5" aria-label="5stars">★</button>
+                    </div>
                 </div>
-
-                @error('rating')
-                <div class="rate-error">{{ $message }}</div>
-                @enderror
-
                 <div class="rate-modal__footer">
                     <button type="submit" class="rate-submit" id="rateSubmit" disabled>送信する</button>
                 </div>

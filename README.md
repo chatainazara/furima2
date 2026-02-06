@@ -46,9 +46,20 @@ STRIPE_SECRET=sk_test_xxxxxxxxxxxxxxxxx（<-stripe の API キーをコピー）
    php artisan db:seed
 
 8. ダミーデータの情報
-レンゲ
-エンジュ
-オウレン
+   'name' => 'レンゲ',  
+   'email' => 'renge@sakamaki-forest.com',  
+   'password' => 'rengerenge',  
+   CO01〜CO05の出品者  
+  
+   'name' => 'エンジュ',  
+   'email' => 'enju@sakamaki-forest.com',  
+   'password' => 'enjuenju',  
+   CO06~CO10の出品者  
+  
+   'name' => 'オウレン',  
+   'email' => 'ouren@sakamaki-forest.com',  
+   'password' => 'ourenouren',  
+   出品物はない  
 
 9. シンボリックリンクの作成
    php artisan storage:link
@@ -73,6 +84,9 @@ No 4242 4242 4242 4242
 4. phpコンテナで本アプリのテストを一度に実行
    vendor/bin/phpunit tests/Feature
 
+5. 今回の入会試験部分だけ実行
+   vendor/bin/phpunit tests/Feature/TransactionTest.php
+
 ## 使用技術(実行環境)
 
 1. PHP: 8.1.33
@@ -96,8 +110,10 @@ No 4242 4242 4242 4242
 4. MailHog: http://localhost:8025
 
 ###　独自の条件解釈（機能要件から読み取れず、独自に解釈した条件）
+
 1.  取引は商品購入後に発生する。また、一つの商品に対して出品者と購入者以外は取引に関与しない。
 2.  1.より「取引中の商品」には購入したものまたはされたものが表示される。これは取引チャットの有無に関わらない。
 3.  評価は購入者としての被評価も出品者としての被評価も総合した評価とする。
 4.  出品者としての取引画面のサイドバーには購入者としての取引画面へのリンクは作らない。逆も同様。
 5.  お互いの評価が完了したものは取引終了として、取引中の商品欄からクリックできないようにする
+

@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 use App\Models\Item;
 use App\Models\Favorite;
@@ -38,14 +37,14 @@ class ItemController extends Controller
             $favorites = Favorite::where('user_id',Auth::id())->get()->toArray();
             // アイテム全体からお気に入りを抽出し検索窓に入力した値で検索
             $items = Item::whereIn('id',Arr::pluck($favorites,'item_id'))->NameSearch($request->search)->get();
-            return view('index',['items'=> $items,'search'=>$request->search,'buys' => $buys]);
+            return view('index',['items'=> $items,'search'=>$request->search,'buys' => $buys,]);
         }else{
             // 通常の検索
             // 自分の出品したもののid取得
             $removeItems = Item::where('user_id',Auth::id())->get()->toArray();
             // 自分が出品した商品の除去及び名前による検索
             $items = Item::whereNotIn('id',Arr::pluck($removeItems,'id'))->NameSearch($request->search)->get()->toArray();
-            return view('index',['items'=> $items,'search'=>$request->search,'buys' => $buys]);
+            return view('index',['items'=> $items,'search'=>$request->search,'buys' => $buys,]);
         }
     }
 

@@ -9,7 +9,6 @@ use App\Models\Item;
 use App\Models\Category;
 use App\Models\Favorite;
 use App\Models\Comment;
-use App\Models\Profile;
 use Symfony\Component\DomCrawler\Crawler;
 use Database\Seeders\CategoriesTableSeeder;
 

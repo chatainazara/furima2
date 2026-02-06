@@ -16,7 +16,7 @@ class CreateChatsTable extends Migration
         Schema::create('chats', function (Blueprint $table) {
             $table->id();
             $table->foreignId('buy_id')->constrained()->cascadeOnDelete();
-            $table->string('chat');//チャット内容
+            $table->text('chat');//チャット内容
             $table->string('pict')->nullable();//写真URL
             $table->string('position');
             $table->timestamps();

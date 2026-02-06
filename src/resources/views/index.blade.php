@@ -9,12 +9,12 @@
     <div class="list-top">
         <div class="list-top__inner">
             <div class="list-top__link">
-                <p class="list-top__link-text">おすすめ</p>
+                <p class="list-top__link-text {{ request('tab') === 'mylist' ? '' : 'is-active' }}">おすすめ</p>
             </div>
             <form class="list-top__form" action="/?tab=mylist" method="post">
                 @csrf
                 <input type="hidden" name="search" value="{{$search}}">
-                <button class="list-top__button" type="submit">マイリスト</button>
+                <button class="list-top__button  {{ request('tab') === 'mylist' ? 'is-active' : '' }}" type="submit">マイリスト</button>
             </form>
         </div>
     </div>
