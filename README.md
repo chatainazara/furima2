@@ -17,24 +17,24 @@
 3. cp .env.example .env
 
 4. .env に以下の環境変数を追加または変更  
-DB_CONNECTION=mysql  
-DB_HOST=mysql  
-DB_PORT=3306  
-DB_DATABASE=laravel_db  
-DB_USERNAME=laravel_user  
-DB_PASSWORD=laravel_pass  
+   DB_CONNECTION=mysql  
+   DB_HOST=mysql  
+   DB_PORT=3306  
+   DB_DATABASE=laravel_db  
+   DB_USERNAME=laravel_user  
+   DB_PASSWORD=laravel_pass  
 
-MAIL_MAILER=smtp  
-MAIL_HOST=mailhog  
-MAIL_PORT=1025  
-MAIL_USERNAME=null  
-MAIL_PASSWORD=null  
-MAIL_ENCRYPTION=null  
-MAIL_FROM_ADDRESS="noreply@example.com"  
-MAIL_FROM_NAME="${APP_NAME}"  
+   MAIL_MAILER=smtp  
+   MAIL_HOST=mailhog  
+   MAIL_PORT=1025  
+   MAIL_USERNAME=null  
+   MAIL_PASSWORD=null  
+   MAIL_ENCRYPTION=null  
+   MAIL_FROM_ADDRESS="noreply@example.com"  
+   MAIL_FROM_NAME="${APP_NAME}"  
 
-STRIPE_KEY=pk_test_xxxxxxxxxxxxxxxxx（<-stripe の API キーをコピー）  
-STRIPE_SECRET=sk_test_xxxxxxxxxxxxxxxxx（<-stripe の API キーをコピー）  
+   STRIPE_KEY=pk_test_xxxxxxxxxxxxxxxxx（<-stripe の API キーをコピー）  
+   STRIPE_SECRET=sk_test_xxxxxxxxxxxxxxxxx（<-stripe の API キーをコピー）  
 
 5. アプリケーションキーの作成
    php artisan key:generate
