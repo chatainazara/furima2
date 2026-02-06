@@ -51,9 +51,11 @@ class TransactionController extends Controller
                 ->where('user_id', $userId)->where('item_id', '!=', $itemId)//修正
                 ->get();
             $position = 'buyer';
+            $needsEvaluation = Evaluation::where('buy_id', $transactionItem->id)
+                ->whereNotNull('evaluate')      // 購入者が評価済み
+                ->exists();
         }
         $editId = $request->query('editId');
-
         // 既読ロジック
         $buyId = $transactionItem->id;
         $buy = Buy::with('item')->findOrFail($buyId);
@@ -61,14 +63,12 @@ class TransactionController extends Controller
         $latestOtherId = Chat::where('buy_id', $buyId)
             ->where('position', $position === 'buyer' ? 'seller' : 'buyer') // 相手側
             ->max('id');
-
         if ($latestOtherId) {
             if ($position === 'buyer') $buy->buyer_read = $latestOtherId;
             if ($position === 'seller') $buy->seller_read = $latestOtherId;
             $buy->save();
         }
         // 既読ロジック終わり
-
         return view('auth.transaction',compact('buys','transactionItem','chats','position','userId','editId','needsEvaluation'));
     }
 
@@ -96,7 +96,7 @@ class TransactionController extends Controller
             'pict'     => $readPath,
             'position' => $request->position,
         ]);
-        // 下書き消す（JS + session 両対応）
+        // 下書き消す
         session()->forget('chat_draft');
         return redirect()->back();
     }

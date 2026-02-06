@@ -10,7 +10,6 @@ use App\Http\Requests\ProfileRequest;
 use App\Models\Buy;
 use App\Models\Item;
 use App\Models\Chat;
-use App\Models\Evaluation;
 use Illuminate\Support\Facades\DB;
 
 class ProfileController extends Controller
@@ -96,7 +95,6 @@ class ProfileController extends Controller
             ->groupBy('items.id')
             ->orderByDesc('latest_chat_at')
             ->get();
-
         $avgRating = $this->buildAvgRating($userId);
         [$unreadCountByBuy, $unreadCountByItem, $totalUnread] = $this->buildUnreadBadges($userId);
         return view('auth.profile',['profile' => $profile,'user'=>$user,'items' => $items,'buys' => $buys ,'transaction' => true,'tab'=>'transaction','avgRating'=>$avgRating,'unreadCountByBuy' => $unreadCountByBuy,'unreadCountByItem' => $unreadCountByItem,'totalUnread' => $totalUnread,]);
@@ -104,12 +102,12 @@ class ProfileController extends Controller
 
     private function buildUnreadBadges(int $userId): array
     {
-        // 未読バッジ（position方式）
+        // 未読バッジ
         $unreadCountByBuy = Chat::join('buys', 'buys.id', '=', 'chats.buy_id')
             ->join('items', 'items.id', '=', 'buys.item_id')
             ->where(function ($query) use ($userId) {
                 $query->where(function ($query2) use ($userId) {
-                        // 自分が買い手 → 相手（売り手）の発言だけ
+                        // 自分が買い手の時の相手（売り手）の発言だけ
                         $query2->where('buys.user_id', $userId)
                         ->where('chats.position', 'seller')
                         ->where(function ($query3) {
@@ -118,7 +116,7 @@ class ProfileController extends Controller
                         });
                     })
                 ->orWhere(function ($query2) use ($userId) {
-                        // 自分が売り手 → 相手（買い手）の発言だけ
+                        // 自分が売り手の時の相手（買い手）の発言だけ
                         $query2->where('items.user_id', $userId)
                         ->where('chats.position', 'buyer')
                         ->where(function ($query3) {
@@ -129,7 +127,7 @@ class ProfileController extends Controller
             })
             ->select('buys.id as buy_id', DB::raw('COUNT(*) as cnt'))
             ->groupBy('buys.id')
-            ->pluck('cnt', 'buy_id'); // [buy_id => 未読数]
+            ->pluck('cnt', 'buy_id');
         // itemごとに合算
         $itemIdByBuyId = Buy::whereIn('id', $unreadCountByBuy->keys())
             ->pluck('item_id', 'id');
@@ -150,7 +148,7 @@ class ProfileController extends Controller
             ->orWhereHas('item', fn($query) => $query->where('user_id', $userId)) // 売り手として関与
             ->get()
             ->pluck('evaluation')
-            ->filter(); // null除去
+            ->filter(); // nullを除去
         if ($evaluations->isEmpty()) return null;
         $sum = 0;
         $count = 0;
@@ -168,6 +166,4 @@ class ProfileController extends Controller
         }
         return $count === 0 ? null : $sum / $count;
     }
-
-
 }

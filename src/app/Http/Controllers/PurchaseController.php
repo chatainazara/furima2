@@ -5,10 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Item;
-use App\Models\Buy;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\AddressRequest;
-use App\Http\Requests\PurchaseRequest;
 
 class PurchaseController extends Controller
 {

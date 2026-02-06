@@ -21,13 +21,15 @@
                 @php
                     $filledStars = floor($avgRating);
                 @endphp
-                @for ($i = 1; $i <= 5; $i++)
-                    @if ($i <= $filledStars)
-                        <span class="star filled">★</span>
-                    @else
-                        <span class="star">★</span>
-                    @endif
-                @endfor
+                @if(!empty($filledStars))
+                    @for ($i = 1; $i <= 5; $i++)
+                        @if ($i <= $filledStars)
+                            <span class="star filled">★</span>
+                        @else
+                            <span class="star">★</span>
+                        @endif
+                    @endfor
+                @endif
                 </div>
             </div>
             <form class="profile__edit" action="/mypage/profile" method="get">
@@ -50,13 +52,15 @@
                 <button class="list-top__button {{($tab??'')==='buy'?'is-active':''}}" type="submit">購入した商品</button>
             </form>
             <form class="list-top__form" action="/mypage/transaction" method="get">
-                @csrf
                 <input type="hidden" name="search" value="{{$search}}">
                 @php $totalUnread = $totalUnread ?? 0; @endphp
-                <button class="list-top__button  {{($tab??'')==='transaction'?'is-active':''}}" type="submit">取引中の商品</button>
+                <button class="list-top__button  {{($tab??'')==='transaction'?'is-active':''}}" type="submit">
+                    取引中の商品
                 @if($totalUnread > 0)
-                <span class="badge">{{ $totalUnread }}</span>
+                    <span class="badge">{{ $totalUnread }}</span>
                 @endif
+                </button>
+
             </form>
         </div>
     </div>
@@ -105,7 +109,6 @@
                 @else
                 <!-- まだ取引中の商品 -->
                 <form class="list__content--form" action="/transaction/{{$item->id}}" method="get" >
-                    @csrf
                     @php
                         $unread = $unreadCountByItem[$item->id] ?? 0;
                     @endphp

@@ -34,6 +34,10 @@
     margin-left: 6vw;
 }
 
+.list-top__link-text.is-active {
+    color: #e60023;
+}
+
 .list-top__form {
     margin-left: 8vw;
     display: inline-block;
@@ -48,8 +52,11 @@
     font-size: 1.5vw;
     font-weight: 400;
     font-style: normal;
-    color:#FF0000;
     line-height: 100%;
+}
+
+.list-top__button.is-active {
+    color: #e60023;
 }
 
 .list__content--button {
