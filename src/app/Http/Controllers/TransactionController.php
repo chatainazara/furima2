@@ -41,7 +41,7 @@ class TransactionController extends Controller
                 ->whereNotNull('evaluate')      // 購入者が評価済み
                 ->whereNull('evaluated')        // 販売者はまだ
                 ->exists();
-        } else {// 自分が買い手の場合
+        } elseif($userId === $buyer->id) {// 自分が買い手の場合
             $chats = Chat::with('buy.item.user.profile')
                 ->whereHas('buy.item', function ($query) use ($itemId) {
                     $query->where('id', $itemId);
@@ -51,10 +51,17 @@ class TransactionController extends Controller
                 ->where('user_id', $userId)->where('item_id', '!=', $itemId)//修正
                 ->get();
             $position = 'buyer';
-            $needsEvaluation = Evaluation::where('buy_id', $transactionItem->id)
-                ->whereNotNull('evaluate')      // 購入者が評価済み
-                ->exists();
+            $evaluation = Evaluation::where('buy_id', $transactionItem->id)->first();
+            $needsEvaluation = is_null($evaluation) || is_null($evaluation->evaluate);
+
+            // $needsEvaluation = Evaluation::where('buy_id', $transactionItem->id)
+            //     ->whereNotNull('evaluate')      // 購入者が評価済み
+            //     ->exists();
         }
+        // if ($position === 'buyer' && $needsEvaluation) {
+        //     return redirect('/mypage/transaction');
+        // }
+
         $editId = $request->query('editId');
         // 既読ロジック
         $buyId = $transactionItem->id;

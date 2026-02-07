@@ -19,7 +19,7 @@
                 </div>
                 <div class="profile__name--star">
                 @php
-                    $filledStars = floor($avgRating);
+                    $filledStars = round($avgRating);
                 @endphp
                 @if(!empty($filledStars))
                     @for ($i = 1; $i <= 5; $i++)

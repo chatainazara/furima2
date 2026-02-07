@@ -186,9 +186,7 @@
 /* 1個ずつのメッセージ */
 .content-msg {
     display: flex;
-    /* gap: 0.5vw; */
     margin: 1vw 0;
-    /* align-items: flex-start; */
 }
 
 .content-msg__avatar {
