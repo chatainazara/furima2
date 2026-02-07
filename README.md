@@ -16,25 +16,25 @@
 
 3. cp .env.example .env
 
-4. .env に以下の環境変数を追加または変更
-DB_CONNECTION=mysql  
-DB_HOST=mysql  
-DB_PORT=3306  
-DB_DATABASE=laravel_db  
-DB_USERNAME=laravel_user  
-DB_PASSWORD=laravel_pass  
+4. .env に以下の環境変数を追加または変更  
+   DB_CONNECTION=mysql  
+   DB_HOST=mysql  
+   DB_PORT=3306  
+   DB_DATABASE=laravel_db  
+   DB_USERNAME=laravel_user  
+   DB_PASSWORD=laravel_pass  
 
-MAIL_MAILER=smtp  
-MAIL_HOST=mailhog  
-MAIL_PORT=1025  
-MAIL_USERNAME=null  
-MAIL_PASSWORD=null  
-MAIL_ENCRYPTION=null  
-MAIL_FROM_ADDRESS="noreply@example.com"  
-MAIL_FROM_NAME="${APP_NAME}"  
+   MAIL_MAILER=smtp  
+   MAIL_HOST=mailhog  
+   MAIL_PORT=1025  
+   MAIL_USERNAME=null  
+   MAIL_PASSWORD=null  
+   MAIL_ENCRYPTION=null  
+   MAIL_FROM_ADDRESS="noreply@example.com"  
+   MAIL_FROM_NAME="${APP_NAME}"  
 
-STRIPE_KEY=pk_test_xxxxxxxxxxxxxxxxx（<-stripe の API キーをコピー）  
-STRIPE_SECRET=sk_test_xxxxxxxxxxxxxxxxx（<-stripe の API キーをコピー）  
+   STRIPE_KEY=pk_test_xxxxxxxxxxxxxxxxx（<-stripe の API キーをコピー）  
+   STRIPE_SECRET=sk_test_xxxxxxxxxxxxxxxxx（<-stripe の API キーをコピー）  
 
 5. アプリケーションキーの作成
    php artisan key:generate
@@ -45,7 +45,7 @@ STRIPE_SECRET=sk_test_xxxxxxxxxxxxxxxxx（<-stripe の API キーをコピー）
 7. シーディングの実行
    php artisan db:seed
 
-8. ダミーデータの情報
+8. ダミーデータの情報  
    'name' => 'レンゲ',  
    'email' => 'renge@sakamaki-forest.com',  
    'password' => 'rengerenge',  
@@ -109,11 +109,10 @@ No 4242 4242 4242 4242
 3. ホーム画面: http://localhost/
 4. MailHog: http://localhost:8025
 
-###　独自の条件解釈（機能要件から読み取れず、独自に解釈した条件）
+### 独自の条件解釈（機能要件から読み取れず、独自に解釈した条件）
 
 1.  取引は商品購入後に発生する。また、一つの商品に対して出品者と購入者以外は取引に関与しない。
 2.  1.より「取引中の商品」には購入したものまたはされたものが表示される。これは取引チャットの有無に関わらない。
 3.  評価は購入者としての被評価も出品者としての被評価も総合した評価とする。
 4.  出品者としての取引画面のサイドバーには購入者としての取引画面へのリンクは作らない。逆も同様。
 5.  お互いの評価が完了したものは取引終了として、取引中の商品欄からクリックできないようにする
-
