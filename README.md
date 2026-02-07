@@ -1,10 +1,10 @@
-# Furima
+# Furima2
 
 ## 環境構築
 
 ### Docker ビルド
 
-1. git clone git@github.com:chatainazara/furima.git
+1. git clone git@github.com:chatainazara/furima2.git
 2. DockerDesktop アプリを立ち上げる
 3. docker-compose up -d --build
 
