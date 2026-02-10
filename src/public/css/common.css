@@ -1,6 +1,5 @@
 .header {
     background: #000;
-    height:8vh;
     width: 100vw;
 }
 
@@ -24,8 +23,7 @@
 
 .header__logo {
     display:inline-block;
-    margin-left: 1vw;
-    height: 5vh;
+    width:30vw;
 }
 
 .header-nav {
@@ -43,7 +41,6 @@
 
 .header-nav__item {
     display:inline-block;
-    /* width: 30%; */
     text-align: center;
     margin-right: 1vw;
 }
@@ -115,4 +112,5 @@
     background: #ffffff;
     color: #000000;
     cursor: pointer;
+    vertical-align: middle;
 }

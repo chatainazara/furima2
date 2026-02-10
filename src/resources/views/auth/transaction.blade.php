@@ -137,6 +137,11 @@
                     {{ $message }}
                 </div>
                 @enderror
+                @error('pict')
+                <div class="error">
+                    {{ $message }}
+                </div>
+                @enderror
                 <form class="content-input__form" action="/transaction/store" method="post" enctype="multipart/form-data">
                     @csrf
                     <textarea
@@ -144,7 +149,7 @@
                         id="chat"
                         class="content-input__textarea"
                         placeholder="取引メッセージを記入してください">{{ old('chat', session('chat_draft')) }}</textarea>
-                    <input type="file" name="pict" id="pict" class="hidden" accept="image/png,image/jpeg">
+                    <input type="file" name="pict" id="pict" class="hidden">
                     <input type="hidden" name="buyId" value="{{$transactionItem->id}}">
                     <input type="hidden" name="position" value="{{$position}}">
                     <label for="pict" class="content-input__add">画像を追加</label>
@@ -270,6 +275,11 @@
                     {{ $message }}
                 </div>
                 @enderror
+                @error('pict')
+                <div class="error">
+                    {{ $message }}
+                </div>
+                @enderror
                 <form class="content-input__form" action="/transaction/store" method="post" enctype="multipart/form-data">
                     @csrf
                     <textarea
@@ -277,7 +287,7 @@
                         id="chat"
                         class="content-input__textarea"
                         placeholder="取引メッセージを記入してください">{{ old('chat', session('chat_draft')) }}</textarea>
-                    <input type="file" name="pict" id="pict" class="hidden" accept="image/png,image/jpeg">
+                    <input type="file" name="pict" id="pict" class="hidden">
                     <input type="hidden" name="buyId" value="{{$transactionItem->id}}">
                     <input type="hidden" name="position" value="{{$position}}">
                     <label for="pict" class="content-input__add">画像を追加</label>

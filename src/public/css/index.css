@@ -32,6 +32,7 @@
     background: #ffffff;
     color: #000000;
     margin-left: 6vw;
+    line-height: 100%;
 }
 
 .list-top__link-text.is-active {
